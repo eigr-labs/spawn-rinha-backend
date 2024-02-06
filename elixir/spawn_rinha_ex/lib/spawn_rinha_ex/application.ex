@@ -1,6 +1,4 @@
 defmodule SpawnRinhaEx.Application do
-  # See https://hexdocs.pm/elixir/Application.html
-  # for more information on OTP Applications
   @moduledoc false
 
   use Application
@@ -8,12 +6,15 @@ defmodule SpawnRinhaEx.Application do
   @impl true
   def start(_type, _args) do
     children = [
-      # Starts a worker by calling: SpawnRinhaEx.Worker.start_link(arg)
-      # {SpawnRinhaEx.Worker, arg}
+      {
+        SpawnSdk.System.Supervisor,
+        system: "spawn-rinha",
+        actors: [
+          SpawnRinhaEx.Actors.Account
+        ]
+      }
     ]
 
-    # See https://hexdocs.pm/elixir/Supervisor.html
-    # for other strategies and supported options
     opts = [strategy: :one_for_one, name: SpawnRinhaEx.Supervisor]
     Supervisor.start_link(children, opts)
   end

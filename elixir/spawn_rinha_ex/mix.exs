@@ -1,17 +1,19 @@
 defmodule SpawnRinhaEx.MixProject do
   use Mix.Project
 
+  @app :spawn_rinha_ex
+  @version "0.1.0"
+
   def project do
     [
-      app: :spawn_rinha_ex,
-      version: "0.1.0",
+      app: @app,
+      version: @version,
       elixir: "~> 1.14",
       start_permanent: Mix.env() == :prod,
       deps: deps()
     ]
   end
 
-  # Run "mix help compile.app" to learn about applications.
   def application do
     [
       extra_applications: [:logger],
@@ -19,11 +21,12 @@ defmodule SpawnRinhaEx.MixProject do
     ]
   end
 
-  # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      # {:dep_from_hexpm, "~> 0.3.0"},
-      # {:dep_from_git, git: "https://github.com/elixir-lang/my_dep.git", tag: "0.1.0"}
+      {:spawn_sdk, "~> 1.1"},
+      {:spawn_statestores_mariadb, "~> 1.1"},
+      {:spawn_statestores_mariadb, "~> 1.1"},
+      {:spawn_statestores_postgres, "~> 1.1"}
     ]
   end
 end
