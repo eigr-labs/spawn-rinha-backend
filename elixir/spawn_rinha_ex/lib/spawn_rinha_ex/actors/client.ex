@@ -13,7 +13,7 @@ defmodule SpawnRinhaEx.Actors.Client do
         payload: %Credit{value: value, description: description}
       )
     else
-      :invalid_id
+      {:error, :invalid_id}
     end
   end
 
@@ -25,7 +25,7 @@ defmodule SpawnRinhaEx.Actors.Client do
         payload: %Debit{value: value, description: description}
       )
     else
-      :invalid_id
+      {:error, :invalid_id}
     end
   end
 

@@ -14,7 +14,7 @@ defmodule SpawnRinhaEx.Api.Routes.Clients do
          {:ok, result} <- transform(statement) do
       send!(conn, 200, result, @content_type)
     else
-      {:error, not_found} ->
+      {:error, :invalid_id} ->
         send!(conn, 404, %{}, @content_type)
 
       _ ->
