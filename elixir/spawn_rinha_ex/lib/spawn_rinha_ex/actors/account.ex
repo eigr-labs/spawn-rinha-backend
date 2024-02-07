@@ -28,11 +28,26 @@ defmodule SpawnRinhaEx.Actors.Account do
     5 => 500_000
   }
 
+  @doc """
+  Initializes the Account Actor.
+
+  ### Parameters:
+
+  - `ctx` (%Context{}) - Current context.
+
+  ### Returns:
+
+  Returns a Value with an updated state.
+
+  ### Behavior:
+
+  - If the current context's state is nil, initializes a new Account Actor.
+  - If the current context's state is not nil, reactivates the existing Account Actor.
+  """
   defact init(ctx) do
     if is_nil(ctx.state) do
-      Logger.info("Initializing Account Actor")
-
       id = String.to_integer(ctx.self.name)
+      Logger.debug("Initializing Account Actor with Id: #{inspect(id)}")
 
       initial_state = %AccountState{limit: Map.get(@id_limit_map, id, 0), balance: 0}
 
