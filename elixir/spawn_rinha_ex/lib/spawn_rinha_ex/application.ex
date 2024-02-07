@@ -20,9 +20,11 @@ defmodule SpawnRinhaEx.Application do
            [
              fn ->
                Process.flag(:trap_exit, true)
-               Process.sleep(100)
+               Process.sleep(200)
 
-               Enum.each(1..5, fn id ->
+               Enum.each(2..6, fn id ->
+                 id = id - 1
+
                  SpawnSdk.spawn_actor("#{id}",
                    system: "spawn-rinha",
                    actor: "account"
