@@ -34,8 +34,8 @@ defmodule SpawnRinhaEx.Application do
                end
              end
            ]}
-      }
-      # {Bandit, get_bandit_options()}
+      },
+      {Bandit, get_bandit_options()}
     ]
 
     opts = [strategy: :one_for_one, name: SpawnRinhaEx.Supervisor]
