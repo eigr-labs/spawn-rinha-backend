@@ -8,16 +8,18 @@ option java_outer_classname = "RinhaProtos";
 
 
 message Transaction {
-    
+
 }
 
 message AccountState {
+    int64 balance = 1;
+    repeated Transaction transactions = 2;
+}
+
+message CreditMessage {
+    int32 value = 1;
 }
 
 message DebitMessage {
   int32 value = 1;
 }
-
-message CreditMessage {
-    int32 value = 1;
-  }
