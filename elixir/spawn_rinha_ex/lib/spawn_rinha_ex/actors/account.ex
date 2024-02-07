@@ -12,7 +12,8 @@ defmodule SpawnRinhaEx.Actors.Account do
   use SpawnSdk.Actor,
     name: "account",
     kind: :unnamed,
-    state_type: Io.Eigr.Spawn.Rinha.AccountState
+    state_type: Io.Eigr.Spawn.Rinha.AccountState,
+    deactivate_timeout: 30_000
 
   require Logger
 
@@ -22,7 +23,7 @@ defmodule SpawnRinhaEx.Actors.Account do
 
   @id_limit_map %{
     1 => 100_000,
-    2 => 80000,
+    2 => 80_000,
     3 => 1_000_000,
     4 => 10_000_000,
     5 => 500_000
@@ -74,8 +75,8 @@ defmodule SpawnRinhaEx.Actors.Account do
 
   """
   defact credit(
-           %Credit{value: value} = data,
-           %Context{state: state} = ctx
+           %Credit{value: value, description: message} = data,
+           %Context{state: %AccountState{transactions: transactions} = state} = ctx
          ) do
     Logger.info("Received Credit Request: #{inspect(data)}. Context: #{inspect(ctx)}")
 
@@ -96,8 +97,8 @@ defmodule SpawnRinhaEx.Actors.Account do
   Returns a value with the updated debit message and the new account state.
   """
   defact debit(
-           %Debit{value: value} = data,
-           %Context{state: state} = ctx
+           %Debit{value: value, description: message} = data,
+           %Context{state: %AccountState{transactions: transactions} = state} = ctx
          ) do
     Logger.info("Received Debit Request: #{inspect(data)}. Context: #{inspect(ctx)}")
 
