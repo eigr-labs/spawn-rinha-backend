@@ -12,15 +12,12 @@ enum TransactionType {
     DEBIT = 2;
 }
 
-message AccountTransactionsState {
-    repeated Transaction transactions = 1;
-}
-
 message Transaction {
-    string description = 1;
-    string date = 2;
-    TransactionType type = 3;
-    int64 value = 4;
+    int64 value = 1;
+    TransactionType type = 2;
+    string description = 3;
+    string date = 4;
+    
 }
 
 message AccountState {
