@@ -23,10 +23,10 @@ push-images:
 	docker push ${spawn-rinha-backend-ex}
 
 run-instance-1:
-	mix deps.get && PROXY_CLUSTER_STRATEGY=epmd PROXY_DATABASE_TYPE=mariadb PROXY_DATABASE_PORT=3307 SPAWN_STATESTORE_KEY=3Jnb0hZiHIzHTOih7t2cTEPEpY98Tu1wvQkPfq/XwqE= PROXY_HTTP_PORT=9090 PROXY_ACTOR_SYSTEM_NAME=spawn-rinha iex --name spawn_rinha_1@127.0.0.1 -S mix
+	mix deps.get && PROXY_CLUSTER_STRATEGY=gossip PROXY_DATABASE_TYPE=mariadb PROXY_DATABASE_POOL_SIZE=15 PROXY_DATABASE_PORT=3307 SPAWN_STATESTORE_KEY=3Jnb0hZiHIzHTOih7t2cTEPEpY98Tu1wvQkPfq/XwqE= PROXY_HTTP_PORT=9090 PROXY_ACTOR_SYSTEM_NAME=spawn-rinha iex --name spawn_rinha_1@127.0.0.1 -S mix
 
 run-instance-2:
-	mix deps.get && PROXY_CLUSTER_STRATEGY=epmd PROXY_DATABASE_TYPE=mariadb PROXY_DATABASE_PORT=3307 SPAWN_STATESTORE_KEY=3Jnb0hZiHIzHTOih7t2cTEPEpY98Tu1wvQkPfq/XwqE= PROXY_HTTP_PORT=9091 PROXY_ACTOR_SYSTEM_NAME=spawn-rinha iex --name spawn_rinha_2@127.0.0.1 -S mix
+	mix deps.get && PROXY_CLUSTER_STRATEGY=gossip PROXY_DATABASE_TYPE=mariadb PROXY_DATABASE_POOL_SIZE=15 PROXY_DATABASE_PORT=3307 SPAWN_STATESTORE_KEY=3Jnb0hZiHIzHTOih7t2cTEPEpY98Tu1wvQkPfq/XwqE= PROXY_HTTP_PORT=9091 PROXY_ACTOR_SYSTEM_NAME=spawn-rinha iex --name spawn_rinha_2@127.0.0.1 -S mix
 
 run-docker-spawn-rinha-backend-ex:
-	docker run --rm --name=spawn-rinha -e PROXY_DATABASE_TYPE=mariadb -e SPAWN_STATESTORE_KEY=3Jnb0hZiHIzHTOih7t2cTEPEpY98Tu1wvQkPfq/XwqE= PROXY_HTTP_PORT=9090 PROXY_ACTOR_SYSTEM_NAME=spawn-rinha --net=host ${spawn-rinha-backend-ex}
+	docker run --rm --name=spawn-rinha -e PROXY_DATABASE_TYPE=mariadb PROXY_DATABASE_POOL_SIZE=15 -e SPAWN_STATESTORE_KEY=3Jnb0hZiHIzHTOih7t2cTEPEpY98Tu1wvQkPfq/XwqE= PROXY_HTTP_PORT=9090 PROXY_ACTOR_SYSTEM_NAME=spawn-rinha --net=host ${spawn-rinha-backend-ex}

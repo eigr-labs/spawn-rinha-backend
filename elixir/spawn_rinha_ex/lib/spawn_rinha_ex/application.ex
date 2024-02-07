@@ -33,7 +33,7 @@ defmodule SpawnRinhaEx.Application do
   defp get_bandit_options() do
     [
       plug: SpawnRinhaEx.Api.Router,
-      port: 9090,
+      port: System.get_env("PROXY_HTTP_PORT") |> String.to_integer(),
       scheme: :http,
       thousand_island_options: [
         max_connections_retry_wait: 2000,
