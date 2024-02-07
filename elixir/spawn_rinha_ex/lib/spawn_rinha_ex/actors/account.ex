@@ -8,7 +8,6 @@ defmodule SpawnRinhaEx.Actors.Account do
 
   1. Start an account actor using SpawnSdk.Actor with `name: "account"` and `kind: :unnamed`.
   2. Use the defined functions `credit/2` and `debit/2` to interact with the account actor.
-
   """
   use SpawnSdk.Actor,
     name: "account",
@@ -20,6 +19,31 @@ defmodule SpawnRinhaEx.Actors.Account do
   alias Io.Eigr.Spawn.Rinha.AccountState
   alias Io.Eigr.Spawn.Rinha.CreditMessage, as: Credit
   alias Io.Eigr.Spawn.Rinha.DebitMessage, as: Debit
+
+  @id_limit_map %{
+    1 => 100_000,
+    2 => 80000,
+    3 => 1_000_000,
+    4 => 10_000_000,
+    5 => 500_000
+  }
+
+  defact init(ctx) do
+    if is_nil(ctx.state) do
+      Logger.info("Initializing Account Actor")
+
+      id = String.to_integer(ctx.self.name)
+
+      initial_state = %AccountState{limit: Map.get(@id_limit_map, id, 0), balance: 0}
+
+      Value.of()
+      |> Value.state(initial_state)
+    else
+      Logger.info("Reactivating Account Actor")
+
+      Value.of()
+    end
+  end
 
   @doc """
   Handles credit operations on the account.
@@ -40,9 +64,9 @@ defmodule SpawnRinhaEx.Actors.Account do
          ) do
     Logger.info("Received Credit Request: #{inspect(data)}. Context: #{inspect(ctx)}")
 
-    new_value = if is_nil(state), do: value, else: (state.value || 0) + value
+    new_balance = ctx.state.balance + value
 
-    Value.of(%Credit{value: new_value}, %AccountState{balance: new_value})
+    Value.of(%Credit{value: new_balance}, %AccountState{balance: new_balance})
   end
 
   @doc """
@@ -62,6 +86,14 @@ defmodule SpawnRinhaEx.Actors.Account do
          ) do
     Logger.info("Received Debit Request: #{inspect(data)}. Context: #{inspect(ctx)}")
 
-    Value.of()
+    new_balance = ctx.state.balance - value
+
+    if new_balance < ctx.state.limit * -1 do
+      Logger.error("Debit request denied. Limit exceeded. Context: #{inspect(ctx)}")
+
+      Value.of(%Debit{value: value}, ctx.state)
+    else
+      Value.of(%Debit{value: new_balance}, %AccountState{balance: new_balance})
+    end
   end
 end

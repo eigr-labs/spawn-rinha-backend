@@ -13,7 +13,29 @@ defmodule SpawnRinhaEx.Application do
           SpawnRinhaEx.Actors.Account
         ]
       },
-      {Bandit, get_bandit_options()}
+      %{
+        id: :task_create_actors,
+        start:
+          {Task, :start_link,
+           [
+             fn ->
+               Process.flag(:trap_exit, true)
+               Process.sleep(100)
+
+               Enum.each(1..5, fn id ->
+                 SpawnSdk.spawn_actor("#{id}",
+                   system: "spawn-rinha",
+                   actor: "account"
+                 )
+               end)
+
+               receive do
+                 {:EXIT, _pid, _reason} -> :ok
+               end
+             end
+           ]}
+      }
+      # {Bandit, get_bandit_options()}
     ]
 
     opts = [strategy: :one_for_one, name: SpawnRinhaEx.Supervisor]
