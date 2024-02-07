@@ -23,6 +23,27 @@ defmodule SpawnRinhaEx.Api.Routes.Clients do
   end
 
   post "/:id/transacoes" do
+    {status, body} ->
+      case conn.body_params do
+        %{"valor" => value, "tipo" => type, "descricao" => description} ->
+          do_handle_request(type, id, value, description)
+
+        _ ->
+          {422, %{}}
+      end
+
+      send(conn, status, body, @content_type)
+  end
+
+  defp do_handle_request("c", id, value, description) do
+    Client.credit(id, value, description)
+  end
+
+  defp do_handle_request("d", id, value, description) do
+    Client.debit(id, value, description)
+  end
+
+  defp do_handle_request(_, _id, _value, _description) do
   end
 
   defp transform(statement) do
