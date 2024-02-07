@@ -18,20 +18,16 @@ defmodule SpawnRinhaEx.Api.Routes.Health do
   end
 
   get "/readiness" do
-    conn
-    |> send!(:ok, %{status: "up"}, @content_type)
-    |> Conn.halt()
+    case GracefulShutdown.running?() do
+      true ->
+        conn
+        |> send!(:ok, %{status: "up"}, @content_type)
+        |> Conn.halt()
 
-    # case GracefulShutdown.running?() do
-    #   true ->
-    #     conn
-    #     |> send!(:ok, %{status: "up"}, @content_type)
-    #     |> Conn.halt()
-
-    #   false ->
-    #     conn
-    #     |> send!(:service_unavailable, %{status: "down"}, @content_type)
-    #     |> Conn.halt()
-    # end
+      false ->
+        conn
+        |> send!(:service_unavailable, %{status: "down"}, @content_type)
+        |> Conn.halt()
+    end
   end
 end
