@@ -43,6 +43,8 @@ defmodule SpawnRinhaEx.Actors.Client do
 
   ```elixir
   Client.credit(3, 100, "Payment")
+  ```
+
   """
   def credit(id, value, description) when is_range(id, 1, 5), do: {:error, :invalid_id}
 
@@ -70,9 +72,9 @@ defmodule SpawnRinhaEx.Actors.Client do
 
   ### Example:
 
-  elixir
-
+  ```elixir
   Client.debit(2, 50, "Purchase")
+  ```
 
   """
   def debit(id, value, description) when is_range(id, 1, 5), do: {:error, :invalid_id}
@@ -87,20 +89,26 @@ defmodule SpawnRinhaEx.Actors.Client do
 
   @doc """
   Retrieves the account statement for a client.
-  Parameters:
+
+  ### Parameters:
 
       id - The client ID.
 
-  Returns:
+  ### Returns:
 
   No return value.
-  Example:
 
-  elixir
+  ### Example:
 
+  ```elixir
   Client.statement(4)
+  ```
 
   """
   def statement(id) do
+    SpawnSdk.invoke("#{id}",
+      action: "get",
+      system: "spawn-rinha"
+    )
   end
 end
