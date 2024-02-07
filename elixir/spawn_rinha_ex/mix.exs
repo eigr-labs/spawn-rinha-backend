@@ -2,7 +2,7 @@ defmodule SpawnRinhaEx.MixProject do
   use Mix.Project
 
   @app :spawn_rinha_ex
-  @version "0.1.0"
+  @version "1.1.1"
 
   def project do
     [
@@ -10,7 +10,8 @@ defmodule SpawnRinhaEx.MixProject do
       version: @version,
       elixir: "~> 1.14",
       start_permanent: Mix.env() == :prod,
-      deps: deps()
+      deps: deps(),
+      releases: releases()
     ]
   end
 
@@ -24,9 +25,24 @@ defmodule SpawnRinhaEx.MixProject do
   defp deps do
     [
       {:bandit, "~> 1.1"},
+      {:bakeware, "~> 0.2"},
       {:spawn_sdk, "~> 1.1"},
       {:spawn_statestores_mariadb, "~> 1.1"},
       {:spawn_statestores_postgres, "~> 1.1"}
+    ]
+  end
+
+  defp releases do
+    [
+      spawn_rinha_ex: [
+        include_executables_for: [:unix],
+        applications: [spawn_rinha_ex: :permanent],
+        steps: [
+          :assemble,
+          &Bakeware.assemble/1
+        ],
+        bakeware: [compression_level: 19]
+      ]
     ]
   end
 end
