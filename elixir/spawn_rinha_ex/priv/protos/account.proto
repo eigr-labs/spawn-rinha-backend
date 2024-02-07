@@ -6,20 +6,29 @@ option java_multiple_files = true;
 option java_package = "io.eigr.spawn.rinha";
 option java_outer_classname = "RinhaProtos";
 
+enum TransactionType {
+    UNKNOWN_TRANSACTION_TYPE = 0;
+    CREDIT = 1;
+    DEBIT = 2;
+}
 
 message Transaction {
-
+    string description = 1;
+    string date = 2;
+    TransactionType type = 3;
+    int64 value = 4;
 }
 
 message AccountState {
-    int64 balance = 1;
-    repeated Transaction transactions = 2;
+    int64 limit = 1;
+    sint64 balance = 2; // saldo
+    repeated Transaction transactions = 3;
 }
 
 message CreditMessage {
-    int32 value = 1;
+    int64 value = 1;
 }
 
 message DebitMessage {
-  int32 value = 1;
+    int64 value = 1;
 }
