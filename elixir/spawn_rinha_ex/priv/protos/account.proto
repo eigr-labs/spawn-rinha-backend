@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+package io.eigr.spawn.rinha;
+
+option java_multiple_files = true;
+option java_package = "io.eigr.spawn.rinha";
+option java_outer_classname = "RinhaProtos";
+
+
+message Transaction {
+    
+}
+
+message AccountState {
+}
+
+message DebitMessage {
+  int32 value = 1;
+}
+
+message CreditMessage {
+    int32 value = 1;
+  }
