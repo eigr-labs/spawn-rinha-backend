@@ -33,10 +33,11 @@ defmodule Io.Eigr.Spawn.Rinha.TransactionType do
     }
   end
 
-  field :UNKNOWN_TRANSACTION_TYPE, 0
-  field :CREDIT, 1
-  field :DEBIT, 2
+  field(:UNKNOWN_TRANSACTION_TYPE, 0)
+  field(:CREDIT, 1)
+  field(:DEBIT, 2)
 end
+
 defmodule Io.Eigr.Spawn.Rinha.TransactionStaus do
   @moduledoc false
   use Protobuf, enum: true, protoc_gen_elixir_version: "0.10.0", syntax: :proto3
@@ -72,10 +73,11 @@ defmodule Io.Eigr.Spawn.Rinha.TransactionStaus do
     }
   end
 
-  field :UNKNOWN_TRANSACTION_STATUS, 0
-  field :OK, 1
-  field :LIMIT_EXCEEDED, 2
+  field(:UNKNOWN_TRANSACTION_STATUS, 0)
+  field(:OK, 1)
+  field(:LIMIT_EXCEEDED, 2)
 end
+
 defmodule Io.Eigr.Spawn.Rinha.Transaction do
   @moduledoc false
   use Protobuf, protoc_gen_elixir_version: "0.10.0", syntax: :proto3
@@ -154,11 +156,12 @@ defmodule Io.Eigr.Spawn.Rinha.Transaction do
     }
   end
 
-  field :value, 1, type: :int64
-  field :type, 2, type: Io.Eigr.Spawn.Rinha.TransactionType, enum: true
-  field :description, 3, type: :string
-  field :date, 4, type: :string
+  field(:value, 1, type: :int64)
+  field(:type, 2, type: Io.Eigr.Spawn.Rinha.TransactionType, enum: true)
+  field(:description, 3, type: :string)
+  field(:date, 4, type: :string)
 end
+
 defmodule Io.Eigr.Spawn.Rinha.TransactionResponse do
   @moduledoc false
   use Protobuf, protoc_gen_elixir_version: "0.10.0", syntax: :proto3
@@ -237,11 +240,12 @@ defmodule Io.Eigr.Spawn.Rinha.TransactionResponse do
     }
   end
 
-  field :status, 1, type: Io.Eigr.Spawn.Rinha.TransactionStaus, enum: true
-  field :type, 2, type: Io.Eigr.Spawn.Rinha.TransactionType, enum: true
-  field :limit, 3, type: :int64
-  field :balance, 4, type: :sint64
+  field(:status, 1, type: Io.Eigr.Spawn.Rinha.TransactionStaus, enum: true)
+  field(:type, 2, type: Io.Eigr.Spawn.Rinha.TransactionType, enum: true)
+  field(:limit, 3, type: :int64)
+  field(:balance, 4, type: :sint64)
 end
+
 defmodule Io.Eigr.Spawn.Rinha.AccountState do
   @moduledoc false
   use Protobuf, protoc_gen_elixir_version: "0.10.0", syntax: :proto3
@@ -306,10 +310,11 @@ defmodule Io.Eigr.Spawn.Rinha.AccountState do
     }
   end
 
-  field :limit, 1, type: :int64
-  field :balance, 2, type: :sint64
-  field :transactions, 3, repeated: true, type: Io.Eigr.Spawn.Rinha.Transaction
+  field(:limit, 1, type: :int64)
+  field(:balance, 2, type: :sint64)
+  field(:transactions, 3, repeated: true, type: Io.Eigr.Spawn.Rinha.Transaction)
 end
+
 defmodule Io.Eigr.Spawn.Rinha.CreditMessage do
   @moduledoc false
   use Protobuf, protoc_gen_elixir_version: "0.10.0", syntax: :proto3
@@ -360,9 +365,10 @@ defmodule Io.Eigr.Spawn.Rinha.CreditMessage do
     }
   end
 
-  field :value, 1, type: :int64
-  field :description, 2, type: :string
+  field(:value, 1, type: :int64)
+  field(:description, 2, type: :string)
 end
+
 defmodule Io.Eigr.Spawn.Rinha.DebitMessage do
   @moduledoc false
   use Protobuf, protoc_gen_elixir_version: "0.10.0", syntax: :proto3
@@ -413,6 +419,6 @@ defmodule Io.Eigr.Spawn.Rinha.DebitMessage do
     }
   end
 
-  field :value, 1, type: :int64
-  field :description, 2, type: :string
+  field(:value, 1, type: :int64)
+  field(:description, 2, type: :string)
 end

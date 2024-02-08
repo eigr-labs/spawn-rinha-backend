@@ -18,9 +18,10 @@ defmodule SpawnRinhaEx.Actors.Account do
   require Logger
 
   alias Io.Eigr.Spawn.Rinha.AccountState
-  alias Io.Eigr.Spawn.Rinha.Transaction
   alias Io.Eigr.Spawn.Rinha.CreditMessage, as: Credit
   alias Io.Eigr.Spawn.Rinha.DebitMessage, as: Debit
+  alias Io.Eigr.Spawn.Rinha.Transaction
+  alias Io.Eigr.Spawn.Rinha.TransactionResponse
 
   @id_limit_map %{
     1 => 100_000,
@@ -94,7 +95,12 @@ defmodule SpawnRinhaEx.Actors.Account do
     new_transactions = [transaction | transactions] |> Enum.take(10)
 
     Value.of()
-    |> Value.response(%Credit{value: new_balance})
+    |> Value.response(%TransactionResponse{
+      status: :OK,
+      type: :CREDIT,
+      limit: ctx.state.limit,
+      balance: new_balance
+    })
     |> Value.state(%AccountState{
       ctx.state
       | transactions: new_transactions,
@@ -125,7 +131,12 @@ defmodule SpawnRinhaEx.Actors.Account do
       Logger.error("Debit request denied. Limit exceeded. Context: #{inspect(ctx)}")
 
       Value.of()
-      |> Value.response(%Debit{value: value})
+      |> Value.response(%TransactionResponse{
+        status: :LIMIT_EXCEEDED,
+        type: :DEBIT,
+        limit: ctx.state.limit,
+        balance: ctx.state.balance
+      })
     else
       transaction = %Transaction{
         description: message,
@@ -137,7 +148,12 @@ defmodule SpawnRinhaEx.Actors.Account do
       new_transactions = [transaction | transactions] |> Enum.take(10)
 
       Value.of()
-      |> Value.response(%Debit{value: new_balance})
+      |> Value.response(%TransactionResponse{
+        status: :OK,
+        type: :DEBIT,
+        limit: ctx.state.limit,
+        balance: new_balance
+      })
       |> Value.state(%AccountState{
         ctx.state
         | transactions: new_transactions,
