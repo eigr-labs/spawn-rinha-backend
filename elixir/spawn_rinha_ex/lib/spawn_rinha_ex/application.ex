@@ -62,7 +62,7 @@ defmodule SpawnRinhaEx.Application do
       thousand_island_options: [
         max_connections_retry_wait: 2000,
         max_connections_retry_count: 10,
-        num_acceptors: 150,
+        num_acceptors: System.get_env("PROXY_HTTP_ACCEPTORS_SIZE", "200") |> String.to_integer(),
         shutdown_timeout: 30_000
       ]
     ]
