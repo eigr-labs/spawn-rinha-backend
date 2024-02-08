@@ -7,7 +7,8 @@ services:
     #restart: always
     hostname: api01
     environment:
-      - NODE_COOKIE=123
+      - NODE_COOKIE=cookie-9ce3712b0c3ee21b582c30f942c0d4da-HLuZyQzy+nt0p0r/PVVFTp2tqfLom5igrdmwkYSuO+Q=
+      - POD_NAMESPACE=spawn-rinha
       - PROXY_ACTOR_SYSTEM_NAME=spawn-rinha
       - PROXY_CLUSTER_STRATEGY=gossip
       - PROXY_DATABASE_NAME=eigr-functions-db
@@ -35,7 +36,8 @@ services:
     <<: *api
     hostname: api02
     environment:
-      - NODE_COOKIE=123
+      - NODE_COOKIE=cookie-9ce3712b0c3ee21b582c30f942c0d4da-HLuZyQzy+nt0p0r/PVVFTp2tqfLom5igrdmwkYSuO+Q=
+      - POD_NAMESPACE=spawn-rinha
       - PROXY_ACTOR_SYSTEM_NAME=spawn-rinha
       - PROXY_CLUSTER_STRATEGY=gossip
       - PROXY_DATABASE_NAME=eigr-functions-db

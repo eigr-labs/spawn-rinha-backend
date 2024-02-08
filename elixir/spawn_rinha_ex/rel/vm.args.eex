@@ -1,2 +1,3 @@
 ## Enable TLS for distribution
 # -proto_dist inet_tls -ssl_dist_optfile "/app/mtls.ssl.conf"
+-setcookie cookie-9ce3712b0c3ee21b582c30f942c0d4da-HLuZyQzy+nt0p0r/PVVFTp2tqfLom5igrdmwkYSuO+Q=

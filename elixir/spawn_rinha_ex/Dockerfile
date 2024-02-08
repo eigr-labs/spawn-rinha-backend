@@ -19,8 +19,7 @@ RUN mix local.rebar --force \
     && mix deps.get \
     && mix release.init
 
-RUN echo "-name spawn_rinha_ex@${HOSTNAME}" >> ./rel/vm.args.eex \
-    && echo "-setcookie ${NODE_COOKIE}" >> ./rel/vm.args.eex
+RUN echo "-name spawn_rinha_ex@${HOSTNAME}" >> ./rel/vm.args.eex
 
 RUN mix deps.get \
     && mix release spawn_rinha_ex
