@@ -3,8 +3,10 @@ defmodule SpawnRinhaEx.Api.Routes.Clients do
   Spawn HTTP Endpoints
   """
   use SpawnRinhaEx.Api.Routes.Base
+
   require Logger
 
+  alias Io.Eigr.Spawn.Rinha.TransactionResponse
   alias SpawnRinhaEx.Actors.Client
 
   @content_type "application/json"
@@ -28,8 +30,11 @@ defmodule SpawnRinhaEx.Api.Routes.Clients do
     cond do
       type == "c" ->
         case Client.credit(id, value, description) do
-          {:ok, _} ->
-            send!(conn, 201, %{}, @content_type)
+          {:ok, %TransactionResponse{status: :LIMIT_EXCEEDED}} ->
+            send!(conn, 422, %{}, @content_type)
+
+          {:ok, result} ->
+            success_response(conn, result)
 
           {:error, :invalid_id} ->
             send!(conn, 404, %{}, @content_type)
@@ -40,8 +45,11 @@ defmodule SpawnRinhaEx.Api.Routes.Clients do
 
       type == "d" ->
         case Client.debit(id, value, description) do
-          {:ok, _} ->
-            send!(conn, 201, %{}, @content_type)
+          {:ok, %TransactionResponse{status: :LIMIT_EXCEEDED}} ->
+            send!(conn, 422, %{}, @content_type)
+
+          {:ok, result} ->
+            success_response(conn, result)
 
           {:error, :invalid_id} ->
             send!(conn, 404, %{}, @content_type)
@@ -53,6 +61,18 @@ defmodule SpawnRinhaEx.Api.Routes.Clients do
       true ->
         send!(conn, 422, %{}, @content_type)
     end
+  end
+
+  defp success_response(conn, %TransactionResponse{status: :OK} = result) do
+    send!(
+      conn,
+      200,
+      %{
+        limite: result.limit,
+        saldo: result.balance
+      },
+      @content_type
+    )
   end
 
   defp transform(statement) do
