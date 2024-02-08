@@ -46,7 +46,7 @@ defmodule SpawnRinhaEx.Actors.Client do
   ```
 
   """
-  def credit(id, _value, _description) when is_range(id, 1, 5), do: {:error, :invalid_id}
+  def credit(id, _value, _description) when not is_range(id, 1, 5), do: {:error, :invalid_id}
 
   def credit(id, value, description) do
     SpawnSdk.invoke("#{id}",
@@ -77,7 +77,7 @@ defmodule SpawnRinhaEx.Actors.Client do
   ```
 
   """
-  def debit(id, _value, _description) when is_range(id, 1, 5), do: {:error, :invalid_id}
+  def debit(id, _value, _description) when not is_range(id, 1, 5), do: {:error, :invalid_id}
 
   def debit(id, value, description) do
     SpawnSdk.invoke("#{id}",
@@ -105,6 +105,8 @@ defmodule SpawnRinhaEx.Actors.Client do
   ```
 
   """
+  def statement(id) when not is_range(id, 1, 5), do: {:error, :invalid_id}
+
   def statement(id) do
     SpawnSdk.invoke("#{id}",
       action: "get_state",

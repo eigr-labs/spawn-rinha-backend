@@ -13,7 +13,7 @@ defmodule SpawnRinhaEx.Api.Routes.Clients do
   @content_type "application/json"
 
   get "/:id/extrato" do
-    with {:ok, statement} <- Client.statement(id),
+    with {:ok, statement} <- Client.statement(String.to_integer(id)),
          {:ok, result} <- TransactionsView.build_transactions_summary(statement) do
       send!(conn, 200, result, @content_type)
     else
@@ -27,7 +27,7 @@ defmodule SpawnRinhaEx.Api.Routes.Clients do
 
   post "/:id/transacoes" do
     conn.body_params
-    |> create_transaction(id)
+    |> create_transaction(String.to_integer(id))
     |> case do
       {:error, :invalid_id} ->
         send!(conn, 404, %{}, @content_type)
