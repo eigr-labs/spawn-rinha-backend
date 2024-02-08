@@ -4,6 +4,7 @@ services:
   api01:
     &api
     image: eigr/spawn-rinha-backend-ex:1.1.1
+    restart: always
     hostname: api01
     environment:
       - PROXY_ACTOR_SYSTEM_NAME=spawn-rinha
@@ -22,7 +23,7 @@ services:
     deploy:
       resources:
         limits:
-          cpus: "0.45"
+          cpus: "0.6"
           memory: "200MB"
 
   api02:
@@ -53,7 +54,7 @@ services:
     deploy:
       resources:
         limits:
-          cpus: "0.15"
+          cpus: "0.17"
           memory: "10MB"
 
   db:
@@ -69,10 +70,12 @@ services:
     deploy:
       resources:
         limits:
-          cpus: "0.45"
+          cpus: "0.13"
           memory: "140MB"
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres -d rinha" ]
 
 networks:
   default:
     driver: bridge
-    name: spawn-rinha-2024q1
+    name: rinha-nginx-2024q1
