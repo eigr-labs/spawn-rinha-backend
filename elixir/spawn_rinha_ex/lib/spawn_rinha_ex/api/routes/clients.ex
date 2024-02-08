@@ -23,30 +23,56 @@ defmodule SpawnRinhaEx.Api.Routes.Clients do
   end
 
   post "/:id/transacoes" do
-    {status, body} ->
-      case conn.body_params do
-        %{"valor" => value, "tipo" => type, "descricao" => description} ->
-          do_handle_request(type, id, value, description)
+    %{"valor" => value, "descricao" => description, "tipo" => type} = conn.body_params
 
-        _ ->
-          {422, %{}}
-      end
+    cond do
+      type == "c" ->
+        case Client.credit(id, value, description) do
+          {:ok, _} ->
+            send!(conn, 201, %{}, @content_type)
 
-      send(conn, status, body, @content_type)
-  end
+          {:error, :invalid_id} ->
+            send!(conn, 404, %{}, @content_type)
 
-  defp do_handle_request("c", id, value, description) do
-    Client.credit(id, value, description)
-  end
+          _ ->
+            send!(conn, 500, %{}, @content_type)
+        end
 
-  defp do_handle_request("d", id, value, description) do
-    Client.debit(id, value, description)
-  end
+      type == "d" ->
+        case Client.debit(id, value, description) do
+          {:ok, _} ->
+            send!(conn, 201, %{}, @content_type)
 
-  defp do_handle_request(_, _id, _value, _description) do
+          {:error, :invalid_id} ->
+            send!(conn, 404, %{}, @content_type)
+
+          _ ->
+            send!(conn, 500, %{}, @content_type)
+        end
+
+      true ->
+        send!(conn, 422, %{}, @content_type)
+    end
   end
 
   defp transform(statement) do
-    {:ok, %{}}
+    {:ok,
+     %{
+       saldo: %{
+         total: statement.balance,
+         data_extrato: DateTime.utc_now() |> DateTime.to_iso8601(),
+         limite: statement.limit
+       },
+       ultimas_transacoes: Enum.map(statement.transactions, &transform_transaction/1)
+     }}
+  end
+
+  defp transform_transaction(%Io.Eigr.Spawn.Rinha.Transaction{} = transaction) do
+    %{
+      valor: transaction.value,
+      descricao: transaction.description,
+      tipo: if(transaction.type == :CREDIT, do: "c", else: "d"),
+      realizada_em: transaction.date
+    }
   end
 end

@@ -18,6 +18,7 @@ defmodule SpawnRinhaEx.Actors.Account do
   require Logger
 
   alias Io.Eigr.Spawn.Rinha.AccountState
+  alias Io.Eigr.Spawn.Rinha.Transaction
   alias Io.Eigr.Spawn.Rinha.CreditMessage, as: Credit
   alias Io.Eigr.Spawn.Rinha.DebitMessage, as: Debit
 
@@ -82,7 +83,23 @@ defmodule SpawnRinhaEx.Actors.Account do
 
     new_balance = ctx.state.balance + value
 
-    Value.of(%Credit{value: new_balance}, %AccountState{balance: new_balance})
+    transaction = %Transaction{
+      description: message,
+      date: DateTime.utc_now() |> DateTime.to_iso8601(),
+      type: :CREDIT,
+      value: value
+    }
+
+    new_transactions =
+      transactions
+      |> Kernel.++([transaction])
+      |> Enum.take(10)
+
+    Value.of(%Credit{value: new_balance}, %AccountState{
+      ctx.state | 
+      transactions: new_transactions,
+      balance: new_balance
+    })
   end
 
   @doc """
@@ -109,7 +126,23 @@ defmodule SpawnRinhaEx.Actors.Account do
 
       Value.of(%Debit{value: value}, ctx.state)
     else
-      Value.of(%Debit{value: new_balance}, %AccountState{balance: new_balance})
+      transaction = %Transaction{
+        description: message,
+        date: DateTime.utc_now() |> DateTime.to_iso8601(),
+        type: :DEBIT,
+        value: value
+      }
+
+      new_transactions =
+        transactions
+        |> Kernel.++([transaction])
+        |> Enum.take(10)
+
+      Value.of(%Debit{value: new_balance}, %AccountState{
+        ctx.state |
+        transactions: new_transactions,
+        balance: new_balance
+      })
     end
   end
 end

@@ -9,7 +9,7 @@ defmodule SpawnRinhaEx.Api.Router do
   plug(Plug.Parsers, parsers: [:json], json_decoder: Jason)
   plug(:dispatch)
 
-  forward("/clients", to: Clients)
+  forward("/clientes", to: Clients)
 
   forward("/health", to: Health)
 

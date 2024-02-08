@@ -107,7 +107,7 @@ defmodule SpawnRinhaEx.Actors.Client do
   """
   def statement(id) do
     SpawnSdk.invoke("#{id}",
-      action: "get",
+      action: "get_state",
       system: "spawn-rinha"
     )
   end
