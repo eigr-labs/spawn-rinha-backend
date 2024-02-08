@@ -47,16 +47,17 @@ defmodule SpawnRinhaEx.Actors.Account do
   - If the current context's state is not nil, reactivates the existing Account Actor.
   """
   defact init(ctx) do
+    id = String.to_integer(ctx.self.name)
+
     if is_nil(ctx.state) do
-      id = String.to_integer(ctx.self.name)
-      Logger.debug("Initializing Account Actor with Id: #{inspect(id)}")
+      Logger.info("Initializing Account Actor with Id: #{inspect(id)}")
 
       initial_state = %AccountState{limit: Map.get(@id_limit_map, id, 0), balance: 0}
 
       Value.of()
       |> Value.state(initial_state)
     else
-      Logger.info("Reactivating Account Actor")
+      Logger.info("Reactivating Account Actor with Id: #{inspect(id)}")
 
       Value.of()
     end
