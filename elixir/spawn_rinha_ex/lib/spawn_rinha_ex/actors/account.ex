@@ -77,7 +77,7 @@ defmodule SpawnRinhaEx.Actors.Account do
   """
   defact credit(
            %Credit{value: value, description: message} = data,
-           %Context{state: %AccountState{transactions: transactions} = state} = ctx
+           %Context{state: %AccountState{transactions: transactions}} = ctx
          ) do
     Logger.info("Received Credit Request: #{inspect(data)}. Context: #{inspect(ctx)}")
 
@@ -90,15 +90,14 @@ defmodule SpawnRinhaEx.Actors.Account do
       value: value
     }
 
-    new_transactions =
-      transactions
-      |> Kernel.++([transaction])
-      |> Enum.take(10)
+    new_transactions = [transaction | transactions] |> Enum.take(10)
 
-    Value.of(%Credit{value: new_balance}, %AccountState{
-      ctx.state | 
-      transactions: new_transactions,
-      balance: new_balance
+    Value.of()
+    |> Value.response(%Credit{value: new_balance})
+    |> Value.state(%AccountState{
+      ctx.state
+      | transactions: new_transactions,
+        balance: new_balance
     })
   end
 
@@ -115,7 +114,7 @@ defmodule SpawnRinhaEx.Actors.Account do
   """
   defact debit(
            %Debit{value: value, description: message} = data,
-           %Context{state: %AccountState{transactions: transactions} = state} = ctx
+           %Context{state: %AccountState{transactions: transactions}} = ctx
          ) do
     Logger.info("Received Debit Request: #{inspect(data)}. Context: #{inspect(ctx)}")
 
@@ -124,7 +123,8 @@ defmodule SpawnRinhaEx.Actors.Account do
     if new_balance < ctx.state.limit * -1 do
       Logger.error("Debit request denied. Limit exceeded. Context: #{inspect(ctx)}")
 
-      Value.of(%Debit{value: value}, ctx.state)
+      Value.of()
+      |> Value.response(%Debit{value: value})
     else
       transaction = %Transaction{
         description: message,
@@ -133,15 +133,14 @@ defmodule SpawnRinhaEx.Actors.Account do
         value: value
       }
 
-      new_transactions =
-        transactions
-        |> Kernel.++([transaction])
-        |> Enum.take(10)
+      new_transactions = [transaction | transactions] |> Enum.take(10)
 
-      Value.of(%Debit{value: new_balance}, %AccountState{
-        ctx.state |
-        transactions: new_transactions,
-        balance: new_balance
+      Value.of()
+      |> Value.response(%Debit{value: new_balance})
+      |> Value.state(%AccountState{
+        ctx.state
+        | transactions: new_transactions,
+          balance: new_balance
       })
     end
   end

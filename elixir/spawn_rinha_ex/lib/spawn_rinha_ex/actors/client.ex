@@ -52,7 +52,6 @@ defmodule SpawnRinhaEx.Actors.Client do
     SpawnSdk.invoke("#{id}",
       action: "credit",
       system: "spawn-rinha",
-      async: true,
       payload: %Credit{value: value, description: description}
     )
   end
@@ -84,7 +83,6 @@ defmodule SpawnRinhaEx.Actors.Client do
     SpawnSdk.invoke("#{id}",
       action: "debit",
       system: "spawn-rinha",
-      async: true,
       payload: %Debit{value: value, description: description}
     )
   end
