@@ -7,13 +7,14 @@ defmodule SpawnRinhaEx.Api.Routes.Clients do
   require Logger
 
   alias Io.Eigr.Spawn.Rinha.TransactionResponse
+  alias SpawnRinhaEx.Api.Views.TransactionsView
   alias SpawnRinhaEx.Actors.Client
 
   @content_type "application/json"
 
   get "/:id/extrato" do
-    with {:ok, statement} <- Client.statement(id),
-         {:ok, result} <- transform(statement) do
+    with {:ok, statement} <- Client.statement(String.to_integer(id)),
+         {:ok, result} <- TransactionsView.build_transactions_summary(statement) do
       send!(conn, 200, result, @content_type)
     else
       {:error, :invalid_id} ->
@@ -25,74 +26,31 @@ defmodule SpawnRinhaEx.Api.Routes.Clients do
   end
 
   post "/:id/transacoes" do
-    %{"valor" => value, "descricao" => description, "tipo" => type} = conn.body_params
+    conn.body_params
+    |> create_transaction(String.to_integer(id))
+    |> case do
+      {:error, :invalid_id} ->
+        send!(conn, 404, %{}, @content_type)
 
-    cond do
-      type == "c" ->
-        case Client.credit(id, value, description) do
-          {:ok, %TransactionResponse{status: :LIMIT_EXCEEDED}} ->
-            send!(conn, 422, %{}, @content_type)
+      {:ok, %TransactionResponse{status: :LIMIT_EXCEEDED}} ->
+        send!(conn, 422, %{}, @content_type)
 
-          {:ok, result} ->
-            success_response(conn, result)
+      {:ok, result} ->
+        {:ok, response} = TransactionsView.build_transaction_response(result)
+        send!(conn, 200, response, @content_type)
 
-          {:error, :invalid_id} ->
-            send!(conn, 404, %{}, @content_type)
-
-          _ ->
-            send!(conn, 500, %{}, @content_type)
-        end
-
-      type == "d" ->
-        case Client.debit(id, value, description) do
-          {:ok, %TransactionResponse{status: :LIMIT_EXCEEDED}} ->
-            send!(conn, 422, %{}, @content_type)
-
-          {:ok, result} ->
-            success_response(conn, result)
-
-          {:error, :invalid_id} ->
-            send!(conn, 404, %{}, @content_type)
-
-          _ ->
-            send!(conn, 500, %{}, @content_type)
-        end
-
-      true ->
+      _ ->
         send!(conn, 422, %{}, @content_type)
     end
   end
 
-  defp success_response(conn, %TransactionResponse{status: :OK} = result) do
-    send!(
-      conn,
-      200,
-      %{
-        limite: result.limit,
-        saldo: result.balance
-      },
-      @content_type
-    )
-  end
+  defp create_transaction(%{"valor" => value, "descricao" => description, "tipo" => type}, id) do
+    case type do
+      "c" ->
+        Client.credit(id, value, description)
 
-  defp transform(statement) do
-    {:ok,
-     %{
-       saldo: %{
-         total: statement.balance,
-         data_extrato: DateTime.utc_now() |> DateTime.to_iso8601(),
-         limite: statement.limit
-       },
-       ultimas_transacoes: Enum.map(statement.transactions, &transform_transaction/1)
-     }}
-  end
-
-  defp transform_transaction(%Io.Eigr.Spawn.Rinha.Transaction{} = transaction) do
-    %{
-      valor: transaction.value,
-      descricao: transaction.description,
-      tipo: if(transaction.type == :CREDIT, do: "c", else: "d"),
-      realizada_em: transaction.date
-    }
+      "d" ->
+        Client.debit(id, value, description)
+    end
   end
 end

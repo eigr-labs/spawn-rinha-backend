@@ -23,7 +23,7 @@ defmodule SpawnRinhaEx.Actors.Client do
   - `max` - The maximum allowed value.
 
   """
-  defguard is_range(n) when is_integer(n) and n > 0 and n < 6
+  defguard is_range(n, min, max) when n in min..max
 
   @doc """
   Performs a credit transaction.
@@ -46,7 +46,7 @@ defmodule SpawnRinhaEx.Actors.Client do
   ```
 
   """
-  def credit(id, _value, _description) when is_range(id), do: {:error, :invalid_id}
+  def credit(id, _value, _description) when not is_range(id, 1, 5), do: {:error, :invalid_id}
 
   def credit(id, value, description) do
     SpawnSdk.invoke("#{id}",
@@ -77,7 +77,7 @@ defmodule SpawnRinhaEx.Actors.Client do
   ```
 
   """
-  def debit(id, _value, _description) when is_range(id, 1, 5), do: {:error, :invalid_id}
+  def debit(id, _value, _description) when not is_range(id, 1, 5), do: {:error, :invalid_id}
 
   def debit(id, value, description) do
     SpawnSdk.invoke("#{id}",
@@ -105,6 +105,8 @@ defmodule SpawnRinhaEx.Actors.Client do
   ```
 
   """
+  def statement(id) when not is_range(id, 1, 5), do: {:error, :invalid_id}
+
   def statement(id) do
     SpawnSdk.invoke("#{id}",
       action: "get_state",
