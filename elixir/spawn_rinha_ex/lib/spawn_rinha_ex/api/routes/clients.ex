@@ -11,7 +11,7 @@ defmodule SpawnRinhaEx.Api.Routes.Clients do
 
   get "/:id/extrato" do
     with {:ok, statement} <- Client.statement(id),
-         {:ok, result} <- transform(statement) do
+         {:ok, result} <- transform(result) do
       send!(conn, 200, result, @content_type)
     else
       {:error, :invalid_id} ->
