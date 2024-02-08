@@ -38,8 +38,6 @@ ENV HOME=/app
 COPY --from=builder --chown=nobody:root /app/_build/${MIX_ENV}/rel/bakeware/ ./
 
 RUN mkdir -p /app/.cache/bakeware/ && chmod 777 /app/.cache/bakeware/
-RUN touch /.erlang.cookie && chmod 777 /.erlang.cookie
-RUN touch /app/.erlang.cookie && chmod 777 /app/.erlang.cookie
 
 USER nobody
 

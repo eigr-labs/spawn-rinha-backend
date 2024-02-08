@@ -7,6 +7,7 @@ services:
     restart: always
     hostname: api01
     environment:
+      - NODE_COOKIE=123
       - PROXY_ACTOR_SYSTEM_NAME=spawn-rinha
       - PROXY_CLUSTER_STRATEGY=gossip
       - PROXY_DATABASE_NAME=rinha
@@ -20,6 +21,8 @@ services:
       - "3001:9090"
     depends_on:
       - db
+    volumes:
+      - /tmp:/app/.cache/bakeware/:rw
     deploy:
       resources:
         limits:
