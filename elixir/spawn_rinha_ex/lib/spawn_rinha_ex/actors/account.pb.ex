@@ -1,300 +1,418 @@
 defmodule Io.Eigr.Spawn.Rinha.TransactionType do
   @moduledoc false
-  use Protobuf, enum: true, protoc_gen_elixir_version: "0.11.0", syntax: :proto3
+  use Protobuf, enum: true, protoc_gen_elixir_version: "0.10.0", syntax: :proto3
 
   def descriptor do
     # credo:disable-for-next-line
     %Google.Protobuf.EnumDescriptorProto{
+      __unknown_fields__: [],
       name: "TransactionType",
+      options: nil,
+      reserved_name: [],
+      reserved_range: [],
       value: [
         %Google.Protobuf.EnumValueDescriptorProto{
+          __unknown_fields__: [],
           name: "UNKNOWN_TRANSACTION_TYPE",
           number: 0,
-          options: nil,
-          __unknown_fields__: []
+          options: nil
         },
         %Google.Protobuf.EnumValueDescriptorProto{
+          __unknown_fields__: [],
           name: "CREDIT",
           number: 1,
-          options: nil,
-          __unknown_fields__: []
+          options: nil
         },
         %Google.Protobuf.EnumValueDescriptorProto{
+          __unknown_fields__: [],
           name: "DEBIT",
           number: 2,
-          options: nil,
-          __unknown_fields__: []
+          options: nil
         }
-      ],
-      options: nil,
-      reserved_range: [],
-      reserved_name: [],
-      __unknown_fields__: []
+      ]
     }
   end
 
-  field(:UNKNOWN_TRANSACTION_TYPE, 0)
-  field(:CREDIT, 1)
-  field(:DEBIT, 2)
+  field :UNKNOWN_TRANSACTION_TYPE, 0
+  field :CREDIT, 1
+  field :DEBIT, 2
 end
+defmodule Io.Eigr.Spawn.Rinha.TransactionStaus do
+  @moduledoc false
+  use Protobuf, enum: true, protoc_gen_elixir_version: "0.10.0", syntax: :proto3
 
+  def descriptor do
+    # credo:disable-for-next-line
+    %Google.Protobuf.EnumDescriptorProto{
+      __unknown_fields__: [],
+      name: "TransactionStaus",
+      options: nil,
+      reserved_name: [],
+      reserved_range: [],
+      value: [
+        %Google.Protobuf.EnumValueDescriptorProto{
+          __unknown_fields__: [],
+          name: "UNKNOWN_TRANSACTION_STATUS",
+          number: 0,
+          options: nil
+        },
+        %Google.Protobuf.EnumValueDescriptorProto{
+          __unknown_fields__: [],
+          name: "OK",
+          number: 1,
+          options: nil
+        },
+        %Google.Protobuf.EnumValueDescriptorProto{
+          __unknown_fields__: [],
+          name: "LIMIT_EXCEEDED",
+          number: 2,
+          options: nil
+        }
+      ]
+    }
+  end
+
+  field :UNKNOWN_TRANSACTION_STATUS, 0
+  field :OK, 1
+  field :LIMIT_EXCEEDED, 2
+end
 defmodule Io.Eigr.Spawn.Rinha.Transaction do
   @moduledoc false
-  use Protobuf, protoc_gen_elixir_version: "0.11.0", syntax: :proto3
+  use Protobuf, protoc_gen_elixir_version: "0.10.0", syntax: :proto3
 
   def descriptor do
     # credo:disable-for-next-line
     %Google.Protobuf.DescriptorProto{
-      name: "Transaction",
+      __unknown_fields__: [],
+      enum_type: [],
+      extension: [],
+      extension_range: [],
       field: [
         %Google.Protobuf.FieldDescriptorProto{
-          name: "description",
-          extendee: nil,
-          number: 1,
-          label: :LABEL_OPTIONAL,
-          type: :TYPE_STRING,
-          type_name: nil,
+          __unknown_fields__: [],
           default_value: nil,
-          options: nil,
-          oneof_index: nil,
-          json_name: "description",
-          proto3_optional: nil,
-          __unknown_fields__: []
-        },
-        %Google.Protobuf.FieldDescriptorProto{
-          name: "date",
           extendee: nil,
-          number: 2,
-          label: :LABEL_OPTIONAL,
-          type: :TYPE_STRING,
-          type_name: nil,
-          default_value: nil,
-          options: nil,
-          oneof_index: nil,
-          json_name: "date",
-          proto3_optional: nil,
-          __unknown_fields__: []
-        },
-        %Google.Protobuf.FieldDescriptorProto{
-          name: "type",
-          extendee: nil,
-          number: 3,
-          label: :LABEL_OPTIONAL,
-          type: :TYPE_ENUM,
-          type_name: ".io.eigr.spawn.rinha.TransactionType",
-          default_value: nil,
-          options: nil,
-          oneof_index: nil,
-          json_name: "type",
-          proto3_optional: nil,
-          __unknown_fields__: []
-        },
-        %Google.Protobuf.FieldDescriptorProto{
-          name: "value",
-          extendee: nil,
-          number: 4,
-          label: :LABEL_OPTIONAL,
-          type: :TYPE_INT64,
-          type_name: nil,
-          default_value: nil,
-          options: nil,
-          oneof_index: nil,
           json_name: "value",
+          label: :LABEL_OPTIONAL,
+          name: "value",
+          number: 1,
+          oneof_index: nil,
+          options: nil,
           proto3_optional: nil,
-          __unknown_fields__: []
+          type: :TYPE_INT64,
+          type_name: nil
+        },
+        %Google.Protobuf.FieldDescriptorProto{
+          __unknown_fields__: [],
+          default_value: nil,
+          extendee: nil,
+          json_name: "type",
+          label: :LABEL_OPTIONAL,
+          name: "type",
+          number: 2,
+          oneof_index: nil,
+          options: nil,
+          proto3_optional: nil,
+          type: :TYPE_ENUM,
+          type_name: ".io.eigr.spawn.rinha.TransactionType"
+        },
+        %Google.Protobuf.FieldDescriptorProto{
+          __unknown_fields__: [],
+          default_value: nil,
+          extendee: nil,
+          json_name: "description",
+          label: :LABEL_OPTIONAL,
+          name: "description",
+          number: 3,
+          oneof_index: nil,
+          options: nil,
+          proto3_optional: nil,
+          type: :TYPE_STRING,
+          type_name: nil
+        },
+        %Google.Protobuf.FieldDescriptorProto{
+          __unknown_fields__: [],
+          default_value: nil,
+          extendee: nil,
+          json_name: "date",
+          label: :LABEL_OPTIONAL,
+          name: "date",
+          number: 4,
+          oneof_index: nil,
+          options: nil,
+          proto3_optional: nil,
+          type: :TYPE_STRING,
+          type_name: nil
         }
       ],
+      name: "Transaction",
       nested_type: [],
-      enum_type: [],
-      extension_range: [],
-      extension: [],
-      options: nil,
       oneof_decl: [],
-      reserved_range: [],
+      options: nil,
       reserved_name: [],
-      __unknown_fields__: []
+      reserved_range: []
     }
   end
 
-  field(:description, 1, type: :string)
-  field(:date, 2, type: :string)
-  field(:type, 3, type: Io.Eigr.Spawn.Rinha.TransactionType, enum: true)
-  field(:value, 4, type: :int64)
+  field :value, 1, type: :int64
+  field :type, 2, type: Io.Eigr.Spawn.Rinha.TransactionType, enum: true
+  field :description, 3, type: :string
+  field :date, 4, type: :string
 end
+defmodule Io.Eigr.Spawn.Rinha.TransactionResponse do
+  @moduledoc false
+  use Protobuf, protoc_gen_elixir_version: "0.10.0", syntax: :proto3
 
+  def descriptor do
+    # credo:disable-for-next-line
+    %Google.Protobuf.DescriptorProto{
+      __unknown_fields__: [],
+      enum_type: [],
+      extension: [],
+      extension_range: [],
+      field: [
+        %Google.Protobuf.FieldDescriptorProto{
+          __unknown_fields__: [],
+          default_value: nil,
+          extendee: nil,
+          json_name: "status",
+          label: :LABEL_OPTIONAL,
+          name: "status",
+          number: 1,
+          oneof_index: nil,
+          options: nil,
+          proto3_optional: nil,
+          type: :TYPE_ENUM,
+          type_name: ".io.eigr.spawn.rinha.TransactionStaus"
+        },
+        %Google.Protobuf.FieldDescriptorProto{
+          __unknown_fields__: [],
+          default_value: nil,
+          extendee: nil,
+          json_name: "type",
+          label: :LABEL_OPTIONAL,
+          name: "type",
+          number: 2,
+          oneof_index: nil,
+          options: nil,
+          proto3_optional: nil,
+          type: :TYPE_ENUM,
+          type_name: ".io.eigr.spawn.rinha.TransactionType"
+        },
+        %Google.Protobuf.FieldDescriptorProto{
+          __unknown_fields__: [],
+          default_value: nil,
+          extendee: nil,
+          json_name: "limit",
+          label: :LABEL_OPTIONAL,
+          name: "limit",
+          number: 3,
+          oneof_index: nil,
+          options: nil,
+          proto3_optional: nil,
+          type: :TYPE_INT64,
+          type_name: nil
+        },
+        %Google.Protobuf.FieldDescriptorProto{
+          __unknown_fields__: [],
+          default_value: nil,
+          extendee: nil,
+          json_name: "balance",
+          label: :LABEL_OPTIONAL,
+          name: "balance",
+          number: 4,
+          oneof_index: nil,
+          options: nil,
+          proto3_optional: nil,
+          type: :TYPE_SINT64,
+          type_name: nil
+        }
+      ],
+      name: "TransactionResponse",
+      nested_type: [],
+      oneof_decl: [],
+      options: nil,
+      reserved_name: [],
+      reserved_range: []
+    }
+  end
+
+  field :status, 1, type: Io.Eigr.Spawn.Rinha.TransactionStaus, enum: true
+  field :type, 2, type: Io.Eigr.Spawn.Rinha.TransactionType, enum: true
+  field :limit, 3, type: :int64
+  field :balance, 4, type: :sint64
+end
 defmodule Io.Eigr.Spawn.Rinha.AccountState do
   @moduledoc false
-  use Protobuf, protoc_gen_elixir_version: "0.11.0", syntax: :proto3
+  use Protobuf, protoc_gen_elixir_version: "0.10.0", syntax: :proto3
 
   def descriptor do
     # credo:disable-for-next-line
     %Google.Protobuf.DescriptorProto{
-      name: "AccountState",
+      __unknown_fields__: [],
+      enum_type: [],
+      extension: [],
+      extension_range: [],
       field: [
         %Google.Protobuf.FieldDescriptorProto{
-          name: "limit",
-          extendee: nil,
-          number: 1,
-          label: :LABEL_OPTIONAL,
-          type: :TYPE_INT64,
-          type_name: nil,
+          __unknown_fields__: [],
           default_value: nil,
-          options: nil,
-          oneof_index: nil,
+          extendee: nil,
           json_name: "limit",
-          proto3_optional: nil,
-          __unknown_fields__: []
-        },
-        %Google.Protobuf.FieldDescriptorProto{
-          name: "balance",
-          extendee: nil,
-          number: 2,
           label: :LABEL_OPTIONAL,
-          type: :TYPE_SINT64,
-          type_name: nil,
-          default_value: nil,
-          options: nil,
+          name: "limit",
+          number: 1,
           oneof_index: nil,
-          json_name: "balance",
+          options: nil,
           proto3_optional: nil,
-          __unknown_fields__: []
+          type: :TYPE_INT64,
+          type_name: nil
         },
         %Google.Protobuf.FieldDescriptorProto{
-          name: "transactions",
-          extendee: nil,
-          number: 3,
-          label: :LABEL_REPEATED,
-          type: :TYPE_MESSAGE,
-          type_name: ".io.eigr.spawn.rinha.Transaction",
+          __unknown_fields__: [],
           default_value: nil,
-          options: nil,
+          extendee: nil,
+          json_name: "balance",
+          label: :LABEL_OPTIONAL,
+          name: "balance",
+          number: 2,
           oneof_index: nil,
-          json_name: "transactions",
+          options: nil,
           proto3_optional: nil,
-          __unknown_fields__: []
+          type: :TYPE_SINT64,
+          type_name: nil
+        },
+        %Google.Protobuf.FieldDescriptorProto{
+          __unknown_fields__: [],
+          default_value: nil,
+          extendee: nil,
+          json_name: "transactions",
+          label: :LABEL_REPEATED,
+          name: "transactions",
+          number: 3,
+          oneof_index: nil,
+          options: nil,
+          proto3_optional: nil,
+          type: :TYPE_MESSAGE,
+          type_name: ".io.eigr.spawn.rinha.Transaction"
         }
       ],
+      name: "AccountState",
       nested_type: [],
-      enum_type: [],
-      extension_range: [],
-      extension: [],
-      options: nil,
       oneof_decl: [],
-      reserved_range: [],
+      options: nil,
       reserved_name: [],
-      __unknown_fields__: []
+      reserved_range: []
     }
   end
 
-  field(:limit, 1, type: :int64)
-  field(:balance, 2, type: :sint64)
-  field(:transactions, 3, repeated: true, type: Io.Eigr.Spawn.Rinha.Transaction)
+  field :limit, 1, type: :int64
+  field :balance, 2, type: :sint64
+  field :transactions, 3, repeated: true, type: Io.Eigr.Spawn.Rinha.Transaction
 end
-
 defmodule Io.Eigr.Spawn.Rinha.CreditMessage do
   @moduledoc false
-  use Protobuf, protoc_gen_elixir_version: "0.11.0", syntax: :proto3
+  use Protobuf, protoc_gen_elixir_version: "0.10.0", syntax: :proto3
 
   def descriptor do
     # credo:disable-for-next-line
     %Google.Protobuf.DescriptorProto{
-      name: "CreditMessage",
+      __unknown_fields__: [],
+      enum_type: [],
+      extension: [],
+      extension_range: [],
       field: [
         %Google.Protobuf.FieldDescriptorProto{
-          name: "value",
-          extendee: nil,
-          number: 1,
-          label: :LABEL_OPTIONAL,
-          type: :TYPE_INT64,
-          type_name: nil,
+          __unknown_fields__: [],
           default_value: nil,
-          options: nil,
-          oneof_index: nil,
+          extendee: nil,
           json_name: "value",
+          label: :LABEL_OPTIONAL,
+          name: "value",
+          number: 1,
+          oneof_index: nil,
+          options: nil,
           proto3_optional: nil,
-          __unknown_fields__: []
+          type: :TYPE_INT64,
+          type_name: nil
         },
         %Google.Protobuf.FieldDescriptorProto{
-          name: "description",
-          extendee: nil,
-          number: 2,
-          label: :LABEL_OPTIONAL,
-          type: :TYPE_STRING,
-          type_name: nil,
+          __unknown_fields__: [],
           default_value: nil,
-          options: nil,
-          oneof_index: nil,
+          extendee: nil,
           json_name: "description",
+          label: :LABEL_OPTIONAL,
+          name: "description",
+          number: 2,
+          oneof_index: nil,
+          options: nil,
           proto3_optional: nil,
-          __unknown_fields__: []
+          type: :TYPE_STRING,
+          type_name: nil
         }
       ],
+      name: "CreditMessage",
       nested_type: [],
-      enum_type: [],
-      extension_range: [],
-      extension: [],
-      options: nil,
       oneof_decl: [],
-      reserved_range: [],
+      options: nil,
       reserved_name: [],
-      __unknown_fields__: []
+      reserved_range: []
     }
   end
 
-  field(:value, 1, type: :int64)
-  field(:description, 2, type: :string)
+  field :value, 1, type: :int64
+  field :description, 2, type: :string
 end
-
 defmodule Io.Eigr.Spawn.Rinha.DebitMessage do
   @moduledoc false
-  use Protobuf, protoc_gen_elixir_version: "0.11.0", syntax: :proto3
+  use Protobuf, protoc_gen_elixir_version: "0.10.0", syntax: :proto3
 
   def descriptor do
     # credo:disable-for-next-line
     %Google.Protobuf.DescriptorProto{
-      name: "DebitMessage",
+      __unknown_fields__: [],
+      enum_type: [],
+      extension: [],
+      extension_range: [],
       field: [
         %Google.Protobuf.FieldDescriptorProto{
-          name: "value",
-          extendee: nil,
-          number: 1,
-          label: :LABEL_OPTIONAL,
-          type: :TYPE_INT64,
-          type_name: nil,
+          __unknown_fields__: [],
           default_value: nil,
-          options: nil,
-          oneof_index: nil,
+          extendee: nil,
           json_name: "value",
+          label: :LABEL_OPTIONAL,
+          name: "value",
+          number: 1,
+          oneof_index: nil,
+          options: nil,
           proto3_optional: nil,
-          __unknown_fields__: []
+          type: :TYPE_INT64,
+          type_name: nil
         },
         %Google.Protobuf.FieldDescriptorProto{
-          name: "description",
-          extendee: nil,
-          number: 2,
-          label: :LABEL_OPTIONAL,
-          type: :TYPE_STRING,
-          type_name: nil,
+          __unknown_fields__: [],
           default_value: nil,
-          options: nil,
-          oneof_index: nil,
+          extendee: nil,
           json_name: "description",
+          label: :LABEL_OPTIONAL,
+          name: "description",
+          number: 2,
+          oneof_index: nil,
+          options: nil,
           proto3_optional: nil,
-          __unknown_fields__: []
+          type: :TYPE_STRING,
+          type_name: nil
         }
       ],
+      name: "DebitMessage",
       nested_type: [],
-      enum_type: [],
-      extension_range: [],
-      extension: [],
-      options: nil,
       oneof_decl: [],
-      reserved_range: [],
+      options: nil,
       reserved_name: [],
-      __unknown_fields__: []
+      reserved_range: []
     }
   end
 
-  field(:value, 1, type: :int64)
-  field(:description, 2, type: :string)
+  field :value, 1, type: :int64
+  field :description, 2, type: :string
 end

@@ -12,12 +12,24 @@ enum TransactionType {
     DEBIT = 2;
 }
 
+enum TransactionStaus {
+    UNKNOWN_TRANSACTION_STATUS = 0;
+    OK = 1;
+    LIMIT_EXCEEDED = 2;
+}
+
 message Transaction {
     int64 value = 1;
     TransactionType type = 2;
     string description = 3;
     string date = 4;
-    
+}
+
+message TransactionResponse {
+    TransactionStaus status = 1;
+    TransactionType type = 2;
+    int64 limit = 3;
+    sint64 balance = 4; 
 }
 
 message AccountState {
