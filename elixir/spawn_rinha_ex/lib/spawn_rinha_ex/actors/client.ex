@@ -46,11 +46,14 @@ defmodule SpawnRinhaEx.Actors.Client do
   ```
 
   """
-  def credit(id, _value, _description) when not is_range(id, 1, 5), do: {:error, :invalid_id}
+  def credit(id, _value, _description) when not is_range(id, 1, 5) or is_nil(id),
+    do: {:error, :invalid_id}
+
   def credit(_id, value, _description) when not is_integer(value), do: {:error, :invalid_payload}
 
-  def credit(_id, _value, description) when not is_binary(description),
-    do: {:error, :invalid_payload}
+  def credit(_id, _value, description)
+      when not is_binary(description) and not is_nil(description) and byte_size(description) > 0,
+      do: {:error, :invalid_payload}
 
   def credit(id, value, description) do
     SpawnSdk.invoke("#{id}",
@@ -81,11 +84,14 @@ defmodule SpawnRinhaEx.Actors.Client do
   ```
 
   """
-  def debit(id, _value, _description) when not is_range(id, 1, 5), do: {:error, :invalid_id}
+  def debit(id, _value, _description) when not is_range(id, 1, 5) or is_nil(id),
+    do: {:error, :invalid_id}
+
   def debit(_id, value, _description) when not is_integer(value), do: {:error, :invalid_payload}
 
-  def debit(_id, _value, description) when not is_binary(description),
-    do: {:error, :invalid_payload}
+  def debit(_id, _value, description)
+      when not is_binary(description) and not is_nil(description) and byte_size(description) > 0,
+      do: {:error, :invalid_payload}
 
   def debit(id, value, description) do
     SpawnSdk.invoke("#{id}",
