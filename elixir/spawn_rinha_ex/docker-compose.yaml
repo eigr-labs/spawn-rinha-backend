@@ -15,7 +15,7 @@ services:
       - PROXY_DATABASE_NAME=eigr-functions-db
       - PROXY_DATABASE_HOST=db
       - PROXY_DATABASE_PORT=3306
-      - PROXY_DATABASE_POOL_SIZE=15
+      - PROXY_DATABASE_POOL_SIZE=12
       - PROXY_DATABASE_SECRET=admin
       - PROXY_DATABASE_TYPE=mariadb
       - PROXY_DATABASE_USERNAME=admin
@@ -31,7 +31,7 @@ services:
     deploy:
       resources:
         limits:
-          cpus: "0.6"
+          cpus: "0.2"
           memory: "200MB"
 
   api02:
@@ -46,7 +46,7 @@ services:
       - PROXY_DATABASE_NAME=eigr-functions-db
       - PROXY_DATABASE_HOST=db
       - PROXY_DATABASE_PORT=3306
-      - PROXY_DATABASE_POOL_SIZE=15
+      - PROXY_DATABASE_POOL_SIZE=10
       - PROXY_DATABASE_SECRET=admin
       - PROXY_DATABASE_TYPE=mariadb
       - PROXY_DATABASE_USERNAME=admin
@@ -58,6 +58,7 @@ services:
 
   nginx:
     image: nginx:latest
+    restart: always
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf:ro
     depends_on:
@@ -68,11 +69,12 @@ services:
     deploy:
       resources:
         limits:
-          cpus: "0.17"
+          cpus: "0.7"
           memory: "10MB"
 
   db:
     image: mariadb
+    restart: always
     hostname: db
     environment:
       MYSQL_ROOT_PASSWORD: admin
@@ -83,11 +85,11 @@ services:
       - mariadb:/var/lib/mysql
     ports:
       - "3309:3306"
-    # deploy:
-    #   resources:
-    #     limits:
-    #       cpus: "0.13"
-    #       memory: "140MB"
+    deploy:
+      resources:
+        limits:
+          cpus: "0.4"
+          memory: "90MB"
 
 networks:
   default:
