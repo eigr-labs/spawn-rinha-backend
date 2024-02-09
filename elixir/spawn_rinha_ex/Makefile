@@ -26,6 +26,15 @@ test:
 		PROXY_ACTOR_SYSTEM_NAME=spawn-rinha \
 		elixir --name spawn_rinha@127.0.0.1 -S mix test
 
+test-native:
+	MIX_ENV=test mix deps.get && MIX_ENV=test \
+		PROXY_DATABASE_TYPE=native \
+		PROXY_CLUSTER_STRATEGY=gossip \
+		PROXY_HTTP_PORT=9090 \
+		SPAWN_STATESTORE_KEY=3Jnb0hZiHIzHTOih7t2cTEPEpY98Tu1wvQkPfq/XwqE= \
+		PROXY_ACTOR_SYSTEM_NAME=spawn-rinha \
+		elixir --name spawn_rinha@127.0.0.1 -S mix test
+
 push-images:
 	docker push ${spawn-image}
 

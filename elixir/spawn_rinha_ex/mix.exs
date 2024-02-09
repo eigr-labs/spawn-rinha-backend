@@ -26,9 +26,9 @@ defmodule SpawnRinhaEx.MixProject do
     [
       {:bandit, "~> 1.1"},
       {:bakeware, "~> 0.2"},
-      {:spawn_sdk, "~> 1.1"},
-      {:spawn_statestores_mariadb, "~> 1.1"},
-      {:spawn_statestores_postgres, "~> 1.1"}
+      {:spawn_sdk, "~> 1.2"},
+      {:spawn_statestores_mariadb, "~> 1.2"},
+      {:spawn_statestores_postgres, "~> 1.2"}
     ]
   end
 
