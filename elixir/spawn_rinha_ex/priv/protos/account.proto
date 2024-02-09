@@ -16,6 +16,8 @@ enum TransactionStaus {
     UNKNOWN_TRANSACTION_STATUS = 0;
     OK = 1;
     LIMIT_EXCEEDED = 2;
+    INVALID_TYPE = 3;
+    FAILURE = 4;
 }
 
 message Transaction {

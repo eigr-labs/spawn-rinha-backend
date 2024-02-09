@@ -81,11 +81,11 @@ services:
       - mariadb:/var/lib/mysql
     ports:
       - "3309:3306"
-    deploy:
-      resources:
-        limits:
-          cpus: "0.13"
-          memory: "140MB"
+    # deploy:
+    #   resources:
+    #     limits:
+    #       cpus: "0.13"
+    #       memory: "140MB"
 
 networks:
   default:

@@ -32,6 +32,9 @@ defmodule SpawnRinhaEx.Api.Routes.Clients do
       {:error, :invalid_id} ->
         send!(conn, 404, %{}, @content_type)
 
+      {:error, :invalid_id} ->
+        send!(conn, 422, %{}, @content_type)
+
       {:ok, %TransactionResponse{status: :LIMIT_EXCEEDED}} ->
         send!(conn, 422, %{}, @content_type)
 
@@ -51,6 +54,9 @@ defmodule SpawnRinhaEx.Api.Routes.Clients do
 
       "d" ->
         Client.debit(id, value, description)
+
+      _ ->
+        {:error, :invalid_type}
     end
   end
 end
