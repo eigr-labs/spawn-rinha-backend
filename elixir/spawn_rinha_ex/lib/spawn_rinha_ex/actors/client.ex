@@ -52,7 +52,7 @@ defmodule SpawnRinhaEx.Actors.Client do
   def credit(_id, value, _description) when not is_integer(value), do: {:error, :invalid_payload}
 
   def credit(_id, _value, description)
-      when not is_binary(description) or is_nil(description) or byte_size(description) > 10,
+      when not is_binary(description) or is_nil(description) or String.length(description) > 0,
       do: {:error, :invalid_payload}
 
   def credit(id, value, description) do
@@ -90,7 +90,7 @@ defmodule SpawnRinhaEx.Actors.Client do
   def debit(_id, value, _description) when not is_integer(value), do: {:error, :invalid_payload}
 
   def debit(_id, _value, description)
-      when not is_binary(description) or is_nil(description) or byte_size(description) > 10,
+      when not is_binary(description) or is_nil(description) or String.length(description) > 0,
       do: {:error, :invalid_payload}
 
   def debit(id, value, description) do
