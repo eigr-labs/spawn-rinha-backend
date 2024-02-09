@@ -13,7 +13,7 @@ defmodule SpawnRinhaEx.Actors.Account do
     name: "account",
     kind: :unnamed,
     state_type: Io.Eigr.Spawn.Rinha.AccountState,
-    deactivate_timeout: 30_000
+    deactivate_timeout: 240_000
 
   require Logger
 
