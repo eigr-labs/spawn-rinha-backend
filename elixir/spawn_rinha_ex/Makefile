@@ -1,11 +1,11 @@
-version=1.1.1
+version=1.2.1
 registry=eigr
 
 spawn-image=${registry}/spawn-rinha-backend-ex:${version}
 
 .PHONY: all
 
-all: build test build-images push-images
+all: build test-native build-images push-images
 
 clean:
 	mix deps.clean --all
@@ -56,6 +56,26 @@ run-instance-2:
 		PROXY_DATABASE_TYPE=mariadb \
 		PROXY_DATABASE_POOL_SIZE=15 \
 		PROXY_DATABASE_PORT=3307 \
+		SPAWN_STATESTORE_KEY=3Jnb0hZiHIzHTOih7t2cTEPEpY98Tu1wvQkPfq/XwqE= \
+		PROXY_HTTP_ACCEPTORS_SIZE=600 \
+		PROXY_HTTP_PORT=9091 \
+		PROXY_ACTOR_SYSTEM_NAME=spawn-rinha \
+		iex --name spawn_rinha_2@127.0.0.1 -S mix
+
+run-native-instance-1:
+	mix deps.get && PROXY_CLUSTER_STRATEGY=gossip \
+	    #ACTORS_GLOBAL_BACKPRESSURE_ENABLED="false" \
+		PROXY_DATABASE_TYPE=native \
+		SPAWN_STATESTORE_KEY=3Jnb0hZiHIzHTOih7t2cTEPEpY98Tu1wvQkPfq/XwqE= \
+		PROXY_HTTP_ACCEPTORS_SIZE=600 \
+		PROXY_HTTP_PORT=9090 \
+		PROXY_ACTOR_SYSTEM_NAME=spawn-rinha \
+		iex --name spawn_rinha_1@127.0.0.1 -S mix
+
+run-native-instance-2:
+	mix deps.get && PROXY_CLUSTER_STRATEGY=gossip \
+		#ACTORS_GLOBAL_BACKPRESSURE_ENABLED="false" \
+		PROXY_DATABASE_TYPE=native \
 		SPAWN_STATESTORE_KEY=3Jnb0hZiHIzHTOih7t2cTEPEpY98Tu1wvQkPfq/XwqE= \
 		PROXY_HTTP_ACCEPTORS_SIZE=600 \
 		PROXY_HTTP_PORT=9091 \
