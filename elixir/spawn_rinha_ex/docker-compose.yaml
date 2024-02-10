@@ -21,7 +21,7 @@ services:
     ports:
       - "3001:9090"
     volumes:
-      - ./data_1:/app/data/:rw
+      - data_1:/app/data/:rw
       - /tmp:/app/.cache/bakeware/:rw
     deploy:
       resources:
@@ -48,7 +48,7 @@ services:
     ports:
       - "3002:9090"
     volumes:
-      - ./data_2:/app/data/:rw
+      - data_2:/app/data/:rw
       - /tmp:/app/.cache/bakeware/:rw
 
   nginx:
@@ -71,3 +71,7 @@ networks:
   default:
     driver: bridge
     name: rinha-nginx-2024q1
+
+volumes:
+  data_1:
+  data_2:

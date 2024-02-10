@@ -64,7 +64,7 @@ run-instance-2:
 
 run-native-instance-1:
 	mix deps.get && PROXY_CLUSTER_STRATEGY=gossip \
-	    #ACTORS_GLOBAL_BACKPRESSURE_ENABLED="false" \
+	    ACTORS_GLOBAL_BACKPRESSURE_ENABLED="false" \
 		PROXY_DATABASE_TYPE=native \
 		SPAWN_STATESTORE_KEY=3Jnb0hZiHIzHTOih7t2cTEPEpY98Tu1wvQkPfq/XwqE= \
 		PROXY_HTTP_ACCEPTORS_SIZE=600 \
