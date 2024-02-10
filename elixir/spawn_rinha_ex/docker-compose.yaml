@@ -57,8 +57,6 @@ services:
     depends_on:
       - api01
       - api02
-      - api03
-      - api04
     ports:
       - "9999:9999"
     deploy:
