@@ -3,7 +3,7 @@ version: "3.5"
 services:
   api01:
     &api
-    image: testrinha
+    image: eigr/spawn-rinha-backend-ex:1.3.0
     restart: always
     hostname: api01
     environment:
