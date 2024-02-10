@@ -3,7 +3,7 @@ version: "3.5"
 services:
   api01:
     &api
-    image: eigr/spawn-rinha-backend-ex:1.2.1
+    image: eigr/spawn-rinha-backend-ex:1.3.0
     restart: always
     hostname: api01
     environment:
@@ -15,7 +15,7 @@ services:
       - PROXY_CLUSTER_STRATEGY=gossip
       - PROXY_DATABASE_TYPE=native
       - PROXY_DATABASE_DATA_DIR=data_1
-      - PROXY_HTTP_ACCEPTORS_SIZE=1024
+      - PROXY_HTTP_ACCEPTORS_SIZE=3500
       - PROXY_HTTP_PORT=9090
       - SPAWN_STATESTORE_KEY=3Jnb0hZiHIzHTOih7t2cTEPEpY98Tu1wvQkPfq/XwqE=
     ports:
@@ -26,9 +26,8 @@ services:
     deploy:
       resources:
         limits:
-          cpus: "0.5"
-          #memory: "240MB"
-          #memory: "500MB"
+          cpus: "0.675"
+          memory: "265MB"
 
   api02:
     <<: *api
@@ -42,7 +41,7 @@ services:
       - PROXY_CLUSTER_STRATEGY=gossip
       - PROXY_DATABASE_TYPE=native
       - PROXY_DATABASE_DATA_DIR=data_2
-      - PROXY_HTTP_ACCEPTORS_SIZE=1024
+      - PROXY_HTTP_ACCEPTORS_SIZE=3500
       - PROXY_HTTP_PORT=9091
       - SPAWN_STATESTORE_KEY=3Jnb0hZiHIzHTOih7t2cTEPEpY98Tu1wvQkPfq/XwqE=
     ports:
@@ -51,53 +50,10 @@ services:
       - data_2:/app/data/:rw
       - /tmp:/app/.cache/bakeware/:rw
 
-  api03:
-    <<: *api
-    hostname: api03
-    environment:
-      - ACTORS_GLOBAL_BACKPRESSURE_ENABLED=false
-      - NODE_COOKIE=cookie-9ce3712b0c3ee21b582c30f942c0d4da-HLuZyQzy+nt0p0r/PVVFTp2tqfLom5igrdmwkYSuO+Q=
-      - POD_NAMESPACE=spawn-rinha
-      - POD_IP=api03
-      - PROXY_ACTOR_SYSTEM_NAME=spawn-rinha
-      - PROXY_CLUSTER_STRATEGY=gossip
-      - PROXY_DATABASE_TYPE=native
-      - PROXY_DATABASE_DATA_DIR=data_3
-      - PROXY_HTTP_ACCEPTORS_SIZE=1024
-      - PROXY_HTTP_PORT=9092
-      - SPAWN_STATESTORE_KEY=3Jnb0hZiHIzHTOih7t2cTEPEpY98Tu1wvQkPfq/XwqE=
-    ports:
-      - "3003:9092"
+  haproxy:
+    image: haproxy:3.0-dev2-alpine
     volumes:
-      - data_3:/app/data/:rw
-      - /tmp:/app/.cache/bakeware/:rw
-
-  api04:
-    <<: *api
-    hostname: api04
-    environment:
-      - ACTORS_GLOBAL_BACKPRESSURE_ENABLED=false
-      - NODE_COOKIE=cookie-9ce3712b0c3ee21b582c30f942c0d4da-HLuZyQzy+nt0p0r/PVVFTp2tqfLom5igrdmwkYSuO+Q=
-      - POD_NAMESPACE=spawn-rinha
-      - POD_IP=api04
-      - PROXY_ACTOR_SYSTEM_NAME=spawn-rinha
-      - PROXY_CLUSTER_STRATEGY=gossip
-      - PROXY_DATABASE_TYPE=native
-      - PROXY_DATABASE_DATA_DIR=data_4
-      - PROXY_HTTP_ACCEPTORS_SIZE=1024
-      - PROXY_HTTP_PORT=9093
-      - SPAWN_STATESTORE_KEY=3Jnb0hZiHIzHTOih7t2cTEPEpY98Tu1wvQkPfq/XwqE=
-    ports:
-      - "3004:9093"
-    volumes:
-      - data_4:/app/data/:rw
-      - /tmp:/app/.cache/bakeware/:rw
-
-  nginx:
-    image: nginx:latest
-    restart: always
-    volumes:
-      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro
     depends_on:
       - api01
       - api02
@@ -108,16 +64,14 @@ services:
     deploy:
       resources:
         limits:
-          cpus: "0.5"
+          cpus: "0.15"
           memory: "20MB"
 
 networks:
   default:
     driver: bridge
-    name: rinha-nginx-2024q1
+    name: rinha-spawn-2024q1
 
 volumes:
   data_1:
   data_2:
-  data_3:
-  data_4:

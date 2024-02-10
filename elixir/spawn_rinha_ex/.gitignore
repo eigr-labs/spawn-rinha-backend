@@ -24,3 +24,6 @@ spawn_rinha_ex-*.tar
 
 # Temporary files, for example, from tests.
 /tmp/
+
+/data/*
+/data/spawn_rinha_*/*

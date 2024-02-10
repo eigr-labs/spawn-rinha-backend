@@ -5,6 +5,8 @@ defmodule SpawnRinhaEx.Application do
 
   @impl true
   def start(_type, _args) do
+    Logger.configure(level: :error)
+
     children = [
       {
         SpawnSdk.System.Supervisor,
@@ -60,8 +62,8 @@ defmodule SpawnRinhaEx.Application do
       port: System.get_env("PROXY_HTTP_PORT") |> String.to_integer(),
       scheme: :http,
       thousand_island_options: [
-        max_connections_retry_wait: 2000,
-        max_connections_retry_count: 10,
+        max_connections_retry_wait: 10,
+        max_connections_retry_count: 100,
         num_acceptors: System.get_env("PROXY_HTTP_ACCEPTORS_SIZE", "200") |> String.to_integer(),
         shutdown_timeout: 30_000
       ]

@@ -37,6 +37,8 @@ ENV HOME=/app
 COPY --from=builder --chown=nobody:root /app/_build/${MIX_ENV}/rel/bakeware/ ./
 
 RUN mkdir -p /app/.cache/bakeware/ && chmod 777 /app/.cache/bakeware/
+RUN mkdir -p /app/data_1 && chmod 777 /app/data_1
+RUN mkdir -p /app/data_2 && chmod 777 /app/data_2
 RUN mkdir -p /app/data && chmod 777 /app/data
 
 USER nobody

@@ -13,7 +13,8 @@ defmodule SpawnRinhaEx.Actors.Account do
     name: "account",
     kind: :unnamed,
     state_type: Io.Eigr.Spawn.Rinha.AccountState,
-    deactivate_timeout: 240_000
+    snapshot_timeout: 5_000,
+    deactivate_timeout: 300_000
 
   require Logger
 
@@ -128,7 +129,7 @@ defmodule SpawnRinhaEx.Actors.Account do
     new_balance = ctx.state.balance - value
 
     if new_balance < ctx.state.limit * -1 do
-      Logger.error("Debit request denied. Limit exceeded. Context: #{inspect(ctx)}")
+      Logger.warning("Debit request denied. Limit exceeded. Context: #{inspect(ctx)}")
 
       Value.of()
       |> Value.response(%TransactionResponse{

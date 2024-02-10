@@ -18,7 +18,7 @@ build-images:
 
 test:
 	MIX_ENV=test mix deps.get && MIX_ENV=test \
-		PROXY_DATABASE_TYPE=mariadb \
+		PROXY_DATABASE_TYPE=native \
 		PROXY_DATABASE_PORT=3307 \
 		PROXY_CLUSTER_STRATEGY=gossip \
 		PROXY_HTTP_PORT=9090 \
@@ -41,7 +41,7 @@ push-images:
 run-instance-1:
 	mix deps.get && PROXY_CLUSTER_STRATEGY=gossip \
 	    ACTORS_GLOBAL_BACKPRESSURE_ENABLED="false" \
-		PROXY_DATABASE_TYPE=mariadb \
+		PROXY_DATABASE_TYPE=native \
 		PROXY_DATABASE_POOL_SIZE=15 \
 		PROXY_DATABASE_PORT=3307 \
 		SPAWN_STATESTORE_KEY=3Jnb0hZiHIzHTOih7t2cTEPEpY98Tu1wvQkPfq/XwqE= \
@@ -53,7 +53,7 @@ run-instance-1:
 run-instance-2:
 	mix deps.get && PROXY_CLUSTER_STRATEGY=gossip \
 		ACTORS_GLOBAL_BACKPRESSURE_ENABLED="false" \
-		PROXY_DATABASE_TYPE=mariadb \
+		PROXY_DATABASE_TYPE=native \
 		PROXY_DATABASE_POOL_SIZE=15 \
 		PROXY_DATABASE_PORT=3307 \
 		SPAWN_STATESTORE_KEY=3Jnb0hZiHIzHTOih7t2cTEPEpY98Tu1wvQkPfq/XwqE= \
