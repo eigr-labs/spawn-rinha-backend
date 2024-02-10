@@ -3,7 +3,7 @@ version: "3.5"
 services:
   api01:
     &api
-    image: eigr/spawn-rinha-backend-ex:1.2.1
+    image: testrinha
     restart: always
     hostname: api01
     environment:
@@ -15,7 +15,7 @@ services:
       - PROXY_CLUSTER_STRATEGY=gossip
       - PROXY_DATABASE_TYPE=native
       - PROXY_DATABASE_DATA_DIR=data_1
-      - PROXY_HTTP_ACCEPTORS_SIZE=1024
+      - PROXY_HTTP_ACCEPTORS_SIZE=3500
       - PROXY_HTTP_PORT=9090
       - SPAWN_STATESTORE_KEY=3Jnb0hZiHIzHTOih7t2cTEPEpY98Tu1wvQkPfq/XwqE=
     ports:
@@ -26,9 +26,8 @@ services:
     deploy:
       resources:
         limits:
-          cpus: "0.5"
-          #memory: "240MB"
-          #memory: "500MB"
+          cpus: "0.675"
+          memory: "265MB"
 
   api02:
     <<: *api
@@ -42,20 +41,19 @@ services:
       - PROXY_CLUSTER_STRATEGY=gossip
       - PROXY_DATABASE_TYPE=native
       - PROXY_DATABASE_DATA_DIR=data_2
-      - PROXY_HTTP_ACCEPTORS_SIZE=1024
+      - PROXY_HTTP_ACCEPTORS_SIZE=3500
       - PROXY_HTTP_PORT=9091
       - SPAWN_STATESTORE_KEY=3Jnb0hZiHIzHTOih7t2cTEPEpY98Tu1wvQkPfq/XwqE=
     ports:
-      - "3002:9090"
+      - "3002:9091"
     volumes:
       - data_2:/app/data/:rw
       - /tmp:/app/.cache/bakeware/:rw
 
-  nginx:
-    image: nginx:latest
-    restart: always
+  haproxy:
+    image: haproxy:3.0-dev2-alpine
     volumes:
-      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro
     depends_on:
       - api01
       - api02
@@ -64,13 +62,13 @@ services:
     deploy:
       resources:
         limits:
-          cpus: "0.5"
+          cpus: "0.15"
           memory: "20MB"
 
 networks:
   default:
     driver: bridge
-    name: rinha-nginx-2024q1
+    name: rinha-spawn-2024q1
 
 volumes:
   data_1:

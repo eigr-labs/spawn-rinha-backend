@@ -1,8 +1,5 @@
 import Config
 
-config :logger,
-  level: :info
-
 config :mnesia,
   dir:
     to_charlist(
