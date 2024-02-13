@@ -57,10 +57,30 @@ defmodule SpawnRinhaEx.Application do
   end
 
   defp get_bandit_options() do
+    case System.get_env("PROXY_HTTP_UDS_ENABLED", "false") do
+      "false" ->
+        get_tcp_options()
+
+      _ ->
+        get_uds_options()
+    end
+    |> Keyword.merge(plug: SpawnRinhaEx.Api.Router, scheme: :http)
+  end
+
+  defp get_uds_options() do
     [
-      plug: SpawnRinhaEx.Api.Router,
+      port: 0,
+      thousand_island_options: [
+        transport_options: [
+          ip: {:local, System.get_env("PROXY_HTTP_UDS_SOCK_ADDR", "/var/run/rinha.sock")}
+        ]
+      ]
+    ]
+  end
+
+  defp get_tcp_options() do
+    [
       port: System.get_env("PROXY_HTTP_PORT") |> String.to_integer(),
-      scheme: :http,
       thousand_island_options: [
         max_connections_retry_wait: 10,
         max_connections_retry_count: 100,
